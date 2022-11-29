@@ -2,7 +2,6 @@ import { Component } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
-import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 import { Container, Title, MTitle } from './App.styled';
 
@@ -17,8 +16,14 @@ class App extends Component {
     filter: '',
   };
 
-  addContact = data => {
-    const newContact = { ...data, id: nanoid() };
+  addContact = newContact => {
+    const isContact = this.state.contacts.find(
+      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    );
+    if (isContact) {
+      Notiflix.Notify.failure(`${newContact.name} is already in contacts`);
+      return;
+    }
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
     }));

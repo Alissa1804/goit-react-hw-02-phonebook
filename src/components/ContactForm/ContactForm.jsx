@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import Notiflix from 'notiflix';
 import { Label, Form, Input, Button } from './ContactForm.styled';
+import { nanoid } from 'nanoid';
 
 class ContactForm extends Component {
   static propTypes = {
@@ -20,11 +20,7 @@ class ContactForm extends Component {
 
   submitHandler = event => {
     event.preventDefault();
-    this.props.contacts.find(({ name }) => name === event.target.name.value)
-      ? Notiflix.Notify.failure(
-          `${event.target.name.value} is already in contacts`
-        )
-      : this.props.addContact({ ...this.state });
+    this.props.addContact({ ...this.state, id: nanoid() });
     this.setState({ name: '', number: '' });
   };
 
